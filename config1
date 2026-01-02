@@ -1,0 +1,273 @@
+-- GUI Main Dupe Console
+
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MainDupeConsole"
+screenGui.Parent = playerGui
+
+-- Frame principale
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.BackgroundColor3 = Color3.fromRGB(33, 33, 33) -- #212121
+mainFrame.BorderSizePixel = 0
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+mainFrame.Parent = screenGui
+
+-- Inizia piccolo per animazione
+mainFrame.Size = UDim2.new(0, 0, 0, 0)
+
+-- Bordi arrotondati max
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 35)
+uiCorner.Parent = mainFrame
+
+-- Container per le tabs in alto centrato
+local tabContainer = Instance.new("Frame")
+tabContainer.Name = "TabContainer"
+tabContainer.Size = UDim2.new(1, -40, 0, 45)
+tabContainer.Position = UDim2.new(0, 20, 0, 15)
+tabContainer.BackgroundTransparency = 1
+tabContainer.Parent = mainFrame
+
+local uiListLayout = Instance.new("UIListLayout")
+uiListLayout.FillDirection = Enum.FillDirection.Horizontal
+uiListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+uiListLayout.Padding = UDim.new(0, 15)
+uiListLayout.Parent = tabContainer
+
+-- Tab Main
+local tabMain = Instance.new("TextButton")
+tabMain.Name = "TabMain"
+tabMain.Size = UDim2.new(0, 150, 0, 40)
+tabMain.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+tabMain.Text = "Main"
+tabMain.TextColor3 = Color3.fromRGB(255, 255, 255)
+tabMain.TextSize = 18
+tabMain.Font = Enum.Font.GothamBold
+tabMain.Parent = tabContainer
+
+local tabMainCorner = Instance.new("UICorner")
+tabMainCorner.CornerRadius = UDim.new(0, 12)
+tabMainCorner.Parent = tabMain
+
+-- Tab Dupe
+local tabDupe = Instance.new("TextButton")
+tabDupe.Name = "TabDupe"
+tabDupe.Size = UDim2.new(0, 150, 0, 40)
+tabDupe.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+tabDupe.Text = "Dupe"
+tabDupe.TextColor3 = Color3.fromRGB(255, 255, 255)
+tabDupe.TextSize = 18
+tabDupe.Font = Enum.Font.GothamBold
+tabDupe.Parent = tabContainer
+
+local tabDupeCorner = Instance.new("UICorner")
+tabDupeCorner.CornerRadius = UDim.new(0, 12)
+tabDupeCorner.Parent = tabDupe
+
+-- Tab Console
+local tabConsole = Instance.new("TextButton")
+tabConsole.Name = "TabConsole"
+tabConsole.Size = UDim2.new(0, 150, 0, 40)
+tabConsole.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+tabConsole.Text = "Console"
+tabConsole.TextColor3 = Color3.fromRGB(255, 255, 255)
+tabConsole.TextSize = 18
+tabConsole.Font = Enum.Font.GothamBold
+tabConsole.Parent = tabContainer
+
+local tabConsoleCorner = Instance.new("UICorner")
+tabConsoleCorner.CornerRadius = UDim.new(0, 12)
+tabConsoleCorner.Parent = tabConsole
+
+-- Content Frames
+local mainContent = Instance.new("Frame")
+mainContent.Name = "MainContent"
+mainContent.Size = UDim2.new(1, -40, 0, 200)
+mainContent.Position = UDim2.new(0, 20, 0, 70)
+mainContent.BackgroundTransparency = 1
+mainContent.Visible = true
+mainContent.Parent = mainFrame
+
+-- Testo "Bonjour User" stile iOS rainbow
+local bonjourText = Instance.new("TextLabel")
+bonjourText.Name = "BonjourText"
+bonjourText.Size = UDim2.new(1, 0, 1, 0)
+bonjourText.BackgroundTransparency = 1
+bonjourText.Text = "Bonjour User"
+bonjourText.TextColor3 = Color3.fromRGB(255, 255, 255)
+bonjourText.TextSize = 22
+bonjourText.Font = Enum.Font.GothamMedium
+bonjourText.Parent = mainContent
+
+-- Rainbow gradient per Bonjour User
+local uiGradient = Instance.new("UIGradient")
+uiGradient.Color = ColorSequence.new({
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+	ColorSequenceKeypoint.new(0.2, Color3.fromRGB(255, 165, 0)),
+	ColorSequenceKeypoint.new(0.4, Color3.fromRGB(255, 255, 0)),
+	ColorSequenceKeypoint.new(0.6, Color3.fromRGB(0, 255, 0)),
+	ColorSequenceKeypoint.new(0.8, Color3.fromRGB(0, 191, 255)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(148, 0, 211))
+})
+uiGradient.Parent = bonjourText
+
+-- Animazione rainbow
+spawn(function()
+	while wait(0.05) do
+		uiGradient.Offset = Vector2.new((tick() % 2) - 1, 0)
+	end
+end)
+
+-- Dupe Content
+local dupeContent = Instance.new("Frame")
+dupeContent.Name = "DupeContent"
+dupeContent.Size = UDim2.new(1, -40, 0, 200)
+dupeContent.Position = UDim2.new(0, 20, 0, 70)
+dupeContent.BackgroundTransparency = 1
+dupeContent.Visible = false
+dupeContent.Parent = mainFrame
+
+local dupeText = Instance.new("TextLabel")
+dupeText.Size = UDim2.new(1, 0, 1, 0)
+dupeText.BackgroundTransparency = 1
+dupeText.Text = "Dupe Section"
+dupeText.TextColor3 = Color3.fromRGB(255, 255, 255)
+dupeText.TextSize = 22
+dupeText.Font = Enum.Font.GothamMedium
+dupeText.Parent = dupeContent
+
+-- Console Content
+local consoleContent = Instance.new("Frame")
+consoleContent.Name = "ConsoleContent"
+consoleContent.Size = UDim2.new(1, -40, 0, 200)
+consoleContent.Position = UDim2.new(0, 20, 0, 70)
+consoleContent.BackgroundTransparency = 1
+consoleContent.Visible = false
+consoleContent.Parent = mainFrame
+
+-- Start Button
+local startButton = Instance.new("TextButton")
+startButton.Name = "StartButton"
+startButton.Size = UDim2.new(0, 120, 0, 45)
+startButton.Position = UDim2.new(0.5, -60, 0, 10)
+startButton.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
+startButton.Text = "Start"
+startButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+startButton.TextSize = 18
+startButton.Font = Enum.Font.GothamBold
+startButton.Parent = consoleContent
+
+local startButtonCorner = Instance.new("UICorner")
+startButtonCorner.CornerRadius = UDim.new(0, 12)
+startButtonCorner.Parent = startButton
+
+-- Console Log
+local consoleLog = Instance.new("ScrollingFrame")
+consoleLog.Name = "ConsoleLog"
+consoleLog.Size = UDim2.new(1, 0, 0, 130)
+consoleLog.Position = UDim2.new(0, 0, 0, 65)
+consoleLog.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+consoleLog.BorderSizePixel = 0
+consoleLog.ScrollBarThickness = 5
+consoleLog.Parent = consoleContent
+
+local consoleLogCorner = Instance.new("UICorner")
+consoleLogCorner.CornerRadius = UDim.new(0, 10)
+consoleLogCorner.Parent = consoleLog
+
+local logLayout = Instance.new("UIListLayout")
+logLayout.SortOrder = Enum.SortOrder.LayoutOrder
+logLayout.Padding = UDim.new(0, 5)
+logLayout.Parent = consoleLog
+
+local logPadding = Instance.new("UIPadding")
+logPadding.PaddingTop = UDim.new(0, 10)
+logPadding.PaddingLeft = UDim.new(0, 10)
+logPadding.Parent = consoleLog
+
+-- Funzione per aggiungere log
+local logOrder = 0
+local function addLog(text)
+	logOrder = logOrder + 1
+	local logText = Instance.new("TextLabel")
+	logText.Size = UDim2.new(1, -20, 0, 20)
+	logText.BackgroundTransparency = 1
+	logText.Text = "> " .. text
+	logText.TextColor3 = Color3.fromRGB(0, 255, 0)
+	logText.TextSize = 14
+	logText.Font = Enum.Font.Code
+	logText.TextXAlignment = Enum.TextXAlignment.Left
+	logText.LayoutOrder = logOrder
+	logText.Parent = consoleLog
+	consoleLog.CanvasSize = UDim2.new(0, 0, 0, logLayout.AbsoluteContentSize.Y + 20)
+	consoleLog.CanvasPosition = Vector2.new(0, consoleLog.CanvasSize.Y.Offset)
+end
+
+-- Console running
+local consoleRunning = false
+
+startButton.MouseButton1Click:Connect(function()
+	if not consoleRunning then
+		consoleRunning = true
+		startButton.Text = "Running..."
+		startButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+		addLog("Started")
+		
+		spawn(function()
+			while consoleRunning do
+				wait(math.random(2, 5))
+				if consoleRunning then
+					local choice = math.random(1, 2)
+					if choice == 1 then
+						local ping = math.random(20, 150)
+						addLog("Ping: " .. ping .. "ms")
+					else
+						local fps = math.random(30, 60)
+						addLog("FPS: " .. fps)
+					end
+				end
+			end
+		end)
+	end
+end)
+
+-- Tab switching
+local function switchTab(tab)
+	mainContent.Visible = false
+	dupeContent.Visible = false
+	consoleContent.Visible = false
+	
+	tabMain.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	tabDupe.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	tabConsole.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	
+	if tab == "Main" then
+		mainContent.Visible = true
+		tabMain.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+	elseif tab == "Dupe" then
+		dupeContent.Visible = true
+		tabDupe.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+	elseif tab == "Console" then
+		consoleContent.Visible = true
+		tabConsole.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+	end
+end
+
+tabMain.MouseButton1Click:Connect(function() switchTab("Main") end)
+tabDupe.MouseButton1Click:Connect(function() switchTab("Dupe") end)
+tabConsole.MouseButton1Click:Connect(function() switchTab("Console") end)
+
+-- Animazione pop up
+local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+
+local frameTween = TweenService:Create(mainFrame, tweenInfo, {
+	Size = UDim2.new(0, 550, 0, 320)
+})
+
+frameTween:Play()
